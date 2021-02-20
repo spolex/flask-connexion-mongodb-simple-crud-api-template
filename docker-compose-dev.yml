@@ -1,0 +1,54 @@
+---
+version: "3.8"
+
+services:
+  example:
+    image: deep-learning-workstation:5000/example
+    container_name: example
+    command: python run.py
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    ports:
+      - "5005:5000"
+    networks:
+      - public
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=flaskdb
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+      - mongodbconfig:/data/configdb
+#      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - public
+
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    env_file:
+      - .env
+    networks:
+      - public
+
+volumes:
+  mongodbdata:
+  mongodbconfig:
+
+networks:
+  public:
+    external: true
+    name: public

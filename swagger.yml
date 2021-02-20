@@ -1,0 +1,88 @@
+swagger: "2.0"
+
+info:
+  title: "Microservice name"
+  version: "0.1"
+  description: "User API template"
+  license:
+    name: MIT
+
+basePath: /v0.1
+
+paths:
+  /user/:
+    get:
+      operationId: microservice.api.user.class_instance.get
+      summary: "Find user by email"
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: email
+          type: string
+          format: email
+          required: true
+          description: Search the user with the email passed as parameter
+      responses:
+        '201':
+          description: 'User successfully fetched from MongoDB database'
+          schema:
+            $ref: '#/definitions/User'
+    delete:
+      operationId: microservice.api.user.class_instance.delete
+      summary: "Delete user by email"
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: email
+          type: string
+          format: email
+          required: true
+          description: Delete user with the email passed as parameter
+      responses:
+        '201':
+          description: 'User successfully deleted from MongoDB database'
+          schema:
+            $ref: '#/definitions/User'
+    patch:
+      operationId: microservice.api.user.class_instance.patch
+      summary: "Update user by email"
+      tags:
+        - users
+      parameters:
+        - in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: 'User successfully updated from MongoDB database'
+    post:
+      operationId: microservice.api.user.class_instance.post
+      summary: "Insert new user into DB"
+      tags:
+        - users
+      parameters:
+        - in: body
+          name: user
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: "New user has been saved"
+        '404':
+          description: "New user can not be created. User email already exist"
+        '500':
+          description: "Internal server error"
+
+definitions:
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string

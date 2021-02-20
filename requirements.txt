@@ -1,0 +1,9 @@
+# dependencies
+flask
+flask-injector
+flask-mongoengine
+connexion[swagger-ui]
+injector
+mongoengine
+werkzeug
+python-dotenv

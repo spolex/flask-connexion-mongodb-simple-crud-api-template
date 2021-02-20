@@ -1,0 +1,13 @@
+---
+version: "3.8"
+
+services:
+  example:
+    image: deep-learning-workstation:5000/example
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - MODE=dev
+    ports:
+      - "5005:5000"
